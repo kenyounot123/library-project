@@ -12,8 +12,42 @@
 }
 .library__title {
   font-size: 4rem;
+  margin: 0;
 }
 .library__books {
-  background-color: limegreen;
+  font-size: 1.2rem;
+  max-width: 100%;
+}
+.library__books__card {
+  display: flex;
+}
+.left-card-section__title, .right-card-section__title {
+  padding: 0 1em;
+  border: solid 1px black;
+  margin: 0;
   font-size: 2rem;
+}
+.book-entry {
+  padding: 0.5em 0;
+}
+.card-entry {
+  margin: 0;
+}
+.left-card-section, .right-card-section {
+  width: 50%;
+  max-width: 50%;
+}
+ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+.book-entry--status {
+  padding: 5px 20px;
+  border-radius: 50px;
+  background-color: green;
+}
+::backdrop {
+  background-color: black;
+  opacity: 0.55;
 }
