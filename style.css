@@ -1,0 +1,19 @@
+* {
+  box-sizing: border-box;
+}
+.library {
+  width: 50%;
+  max-width: 1000px;
+  margin: 0 auto;
+  border: solid 2px black;
+}
+.center-text {
+  text-align: center;
+}
+.library__title {
+  font-size: 4rem;
+}
+.library__books {
+  background-color: limegreen;
+  font-size: 2rem;
+}
