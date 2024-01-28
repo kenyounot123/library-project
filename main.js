@@ -1,4 +1,4 @@
-const myLibrary = [];
+const myLibrary = [new Book("Percy Jackson", "bobby", 233, false )];
 
 const dialog = document.querySelector("dialog");
 const showButton = document.querySelector(".new-book-btn");
@@ -13,9 +13,9 @@ closeButton.addEventListener("click", () => {
 // Do not submit fake form
 confirmBtn.addEventListener("click", (event) => {
   event.preventDefault(); 
+  addBookToLibrary()
 });
-confirmBtn.addEventListener("click", addBookToLibrary);
-
+displayBooks()
 function Book(title, author, pages, status) {
   this.title = title
   this.author = author
@@ -41,6 +41,13 @@ function addBookToLibrary() {
 }
 //Loop through library array to display books to DOM
 function displayBooks() {
+  //Reset DOM to prevent repeat data
+  const bookEntry = document.querySelector('.left-card-section__title + .card-entry')
+  const bookEntryStatus = document.querySelector('.right-card-section__title + .card-entry')
+  bookEntry.innerHTML = '';
+  bookEntryStatus.innerHTML = '';
+
+
   myLibrary.forEach(book => {
     appendBookEntry(book)
   });
@@ -59,7 +66,7 @@ function appendBookEntry(book) {
   const readStatus = document.createElement('span');
   newBookEntryStatus.classList.add('book-entry');
   readStatus.classList.add('book-entry--status');
-  readStatus.textContent = book.status
+  addInitialStatus(book, readStatus)
 
   // Appends remove book button to DOM 
   const removeBtn = document.createElement('button');
@@ -70,17 +77,32 @@ function appendBookEntry(book) {
   const changeStatusBtn = document.createElement('button'); 
   changeStatusBtn.textContent = 'Change Status'
   changeStatusBtn.classList.add('change-status-btn')
+  changeStatusBtn.addEventListener('click', function(event) {
+    changeStatus(event);
+  });
 
-  newBookEntryStatus.appendChild(changeStatusBtn)
   newBookEntryStatus.appendChild(removeBtn)
   newBookEntryStatus.appendChild(readStatus)
+  newBookEntryStatus.appendChild(changeStatusBtn)
   bookEntryStatus.appendChild(newBookEntryStatus)
 }
-function checkStatus(book) {
-
+function addInitialStatus(book, element) {
+  if (book.status === true) {
+    element.textContent = 'Read'
+    element.classList.add('read')
+  } else {
+    element.textContent = 'Unread'
+    element.classList.add('unread')
+  };
 }
 
-function changeStatus() {
-  const readStatus = document.querySelector('.book-entry--status')
+//Change status button 
+function changeStatus(event) {
+  const readStatus = event.target.previousElementSibling
   readStatus.classList.toggle('read')
+  if (readStatus.classList.contains('read')) {
+    readStatus.textContent = 'Read';
+  } else {
+    readStatus.textContent = 'Unread';
+  }
 }
