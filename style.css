@@ -34,8 +34,7 @@
   margin: 0;
 }
 .left-card-section, .right-card-section {
-  width: 50%;
-  max-width: 50%;
+  width: 100%;
 }
 ul {
   margin: 0;
@@ -50,4 +49,7 @@ ul {
 ::backdrop {
   background-color: black;
   opacity: 0.55;
+}
+.form-container {
+  padding: 2em;
 }

@@ -11,15 +11,31 @@
   <section class="library">
     <div class="container">
       <h1 class="library__title center-text">Library</h1>
-      <dialog>
-        <button autofocus>Close</button>
-        <form id="bookForm"></form>
+      <dialog id="formDialog">
+        <form class="form-container" id="bookForm">
+          <label for="title">Title:</label>
+          <input type="text" id="title" name="title" required>
+
+          <label for="author">Author:</label>
+          <input type="text" id="author" name="author" required>
+
+          <label for="pages">Pages:</label>
+          <input type="text" id="pages" name="pages" required>
+
+          <label for="status">Read?</label>
+          <input type="checkbox" id="status" name="readStatus" required>
+
+          <div>
+            <button class="cancel-btn" value="cancel" formmethod="dialog">Cancel</button>
+            <button id="confirmBtn" value="default">Confirm</button>
+          </div>
+        </form>
       </dialog>
       <button class="new-book-btn">NEW BOOK</button>
       <main class="library__books">
         <div class="library__books__card">
           <div class="left-card-section">
-            <h3 class="left-card-section__title center-text">Book info</h3>
+            <h3 class="left-card-section__title center-text">Book</h3>
             <ol class="card-entry">
               <li class="book-entry">Percy Jackson</li>
             </ol>
