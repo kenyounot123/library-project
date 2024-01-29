@@ -1,21 +1,8 @@
 const myLibrary = [new Book("Percy Jackson", "bobby", 233, false )];
 
-const dialog = document.querySelector("dialog");
-const showButton = document.querySelector(".new-book-btn");
-const closeButton = document.querySelector(".cancel-btn");
-showButton.addEventListener("click", () => {
-  dialog.showModal();
-});
 
-closeButton.addEventListener("click", () => {
-  dialog.close();
-});
-// Do not submit fake form
-confirmBtn.addEventListener("click", (event) => {
-  event.preventDefault(); 
-  addBookToLibrary()
-});
-displayBooks()
+displayBooks();
+
 function Book(title, author, pages, status) {
   this.title = title
   this.author = author
@@ -48,12 +35,12 @@ function displayBooks() {
   bookEntryStatus.innerHTML = '';
 
 
-  myLibrary.forEach(book => {
-    appendBookEntry(book)
+  myLibrary.forEach((book, index) => {
+    appendBookEntry(book, index)
   });
 }
 //Appends new book to the DOM
-function appendBookEntry(book) {
+function appendBookEntry(book, index) {
   const bookEntry = document.querySelector('.left-card-section__title + .card-entry')
   const newBookEntry = document.createElement('li');
   newBookEntry.classList.add('book-entry');
@@ -71,7 +58,11 @@ function appendBookEntry(book) {
   // Appends remove book button to DOM 
   const removeBtn = document.createElement('button');
   removeBtn.textContent = 'Remove'
-  removeBtn.classList.add('remove-book-btn')
+  removeBtn.setAttribute('data-index', index);
+  removeBtn.classList.add('remove-book-btn');
+  removeBtn.addEventListener('click', function(event) {
+    removeBook(event);
+  })
 
   //Appends change status button to DOM 
   const changeStatusBtn = document.createElement('button'); 
@@ -104,5 +95,31 @@ function changeStatus(event) {
     readStatus.textContent = 'Read';
   } else {
     readStatus.textContent = 'Unread';
+    readStatus.classList.add('unread')
   }
 }
+function removeBook(event) {
+  const dataIndex = parseInt(event.target.getAttribute('data-index'));
+
+  // Remove the book from myLibrary array
+  myLibrary.splice(dataIndex, 1);
+
+  // Update the display
+  displayBooks();
+}
+//Modal
+const dialog = document.querySelector("dialog");
+const showButton = document.querySelector(".new-book-btn");
+const closeButton = document.querySelector(".cancel-btn");
+showButton.addEventListener("click", () => {
+  dialog.showModal();
+});
+
+closeButton.addEventListener("click", () => {
+  dialog.close();
+});
+// Do not submit fake form
+confirmBtn.addEventListener("click", (event) => {
+  event.preventDefault(); 
+  addBookToLibrary()
+});
