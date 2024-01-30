@@ -3,6 +3,7 @@ const myLibrary = [new Book("Percy Jackson", "bobby", 233, false )];
 
 displayBooks();
 
+//Modals 
 const formDialog = document.querySelector("#formDialog");
 const showButton = document.querySelector(".new-book-btn");
 const closeButton = document.querySelector(".cancel-btn");
@@ -30,61 +31,68 @@ window.onclick = function(event) {
 }
 
 function Book(title, author, pages, status) {
-  this.title = title
-  this.author = author
-  this.pages = pages
-  this.status = status
+  this.title = title;
+  this.author = author;
+  this.pages = pages;
+  this.status = status;
+}
+Book.prototype.statusSwitch = function() {
+  this.read = !this.read;
 }
 
 function addBookToLibrary() {
-  const title = document.getElementById('title').value 
-  const author = document.getElementById('author').value 
-  const pages = document.getElementById('pages').value
-  const status = document.getElementById('status').checked
+  const title = document.getElementById('title').value ;
+  const author = document.getElementById('author').value ;
+  const pages = document.getElementById('pages').value;
+  const status = document.getElementById('status').checked;
   // Check if fields are empty
   if (!title || !author || !pages) {
     alert("Please fill in all required fields.");
     return;
   }
   //Create new object and push it to library array
-  const newBook = new Book(title, author, pages, status)
-  myLibrary.push(newBook)
-  displayBooks()
-  formDialog.close()
+  const newBook = new Book(title, author, pages, status);
+  myLibrary.push(newBook);
+  displayBooks();
+  formDialog.close();
 }
 //Loop through library array to display books to DOM
 function displayBooks() {
   //Reset DOM to prevent repeat data
-  const bookEntry = document.querySelector('.left-card-section__title + .card-entry')
-  const bookEntryStatus = document.querySelector('.right-card-section__title + .card-entry')
+  const bookEntry = document.querySelector('.left-card-section__title + .card-entry');
+  const bookEntryStatus = document.querySelector('.right-card-section__title + .card-entry');
   bookEntry.innerHTML = '';
   bookEntryStatus.innerHTML = '';
 
 
   myLibrary.forEach((book, index) => {
-    appendBookEntry(book, index)
+    appendBookEntry(book, index);
   });
 }
 //Appends new book to the DOM
 function appendBookEntry(book, index) {
-  const bookEntry = document.querySelector('.left-card-section__title + .card-entry')
+  const bookEntry = document.querySelector('.left-card-section__title + .card-entry');
   const newBookEntry = document.createElement('li');
   newBookEntry.classList.add('book-entry');
-  newBookEntry.addEventListener('click', displayBookInfo)
-  newBookEntry.textContent = book.title
-  bookEntry.appendChild(newBookEntry)
+  newBookEntry.setAttribute('data-index', index);
+  newBookEntry.addEventListener('click', function(event) {
+    createBookInfoModal(event);
+    displayBookInfo();
+  })
+  newBookEntry.textContent = book.title;
+  bookEntry.appendChild(newBookEntry);
 
   //Appends status of book to DOM
-  const bookEntryStatus = document.querySelector('.right-card-section__title + .card-entry')
+  const bookEntryStatus = document.querySelector('.right-card-section__title + .card-entry');
   const newBookEntryStatus = document.createElement('li');
   const readStatus = document.createElement('span');
   newBookEntryStatus.classList.add('book-entry');
   readStatus.classList.add('book-entry--status');
-  addInitialStatus(book, readStatus)
+  addInitialStatus(book, readStatus);
 
   // Appends remove book button to DOM 
   const removeBtn = document.createElement('button');
-  removeBtn.textContent = 'Remove'
+  removeBtn.textContent = 'Remove';
   removeBtn.setAttribute('data-index', index);
   removeBtn.classList.add('remove-book-btn');
   removeBtn.addEventListener('click', function(event) {
@@ -93,41 +101,47 @@ function appendBookEntry(book, index) {
 
   //Appends change status button to DOM 
   const changeStatusBtn = document.createElement('button'); 
-  changeStatusBtn.textContent = 'Change Status'
-  changeStatusBtn.classList.add('change-status-btn')
+  changeStatusBtn.textContent = 'Change Status';
+  changeStatusBtn.setAttribute('data-index', index)
+  changeStatusBtn.classList.add('change-status-btn');
   changeStatusBtn.addEventListener('click', function(event) {
     changeStatus(event);
   });
 
-  newBookEntryStatus.appendChild(removeBtn)
-  newBookEntryStatus.appendChild(readStatus)
-  newBookEntryStatus.appendChild(changeStatusBtn)
-  bookEntryStatus.appendChild(newBookEntryStatus)
+  newBookEntryStatus.appendChild(removeBtn);
+  newBookEntryStatus.appendChild(readStatus);
+  newBookEntryStatus.appendChild(changeStatusBtn);
+  bookEntryStatus.appendChild(newBookEntryStatus);
 }
 function addInitialStatus(book, element) {
   if (book.status === true) {
-    element.textContent = 'Read'
-    element.classList.add('read')
+    element.textContent = 'Read';
+    element.classList.add('read');
   } else {
-    element.textContent = 'Unread'
-    element.classList.add('unread')
+    element.textContent = 'Unread';
+    element.classList.add('unread');
   };
 }
 function displayBookInfo() {
-  bookDialog.showModal()
+  bookDialog.showModal();
 }
-function createBookInfoModal() {
-
+function createBookInfoModal(event) {
+  const bookIndex = parseInt(event.target.getAttribute('data-index'));
+  const currentBook = myLibrary[bookIndex];
+  bookDialog.textContent = `"${currentBook.title}" by ${currentBook.author} , ${String(currentBook.pages)} pages`;
 }
 //Change status button 
 function changeStatus(event) {
-  const readStatus = event.target.previousElementSibling
-  readStatus.classList.toggle('read')
+  const readStatus = event.target.previousElementSibling;
+  let i = event.target.getAttribute('data-index')
+  readStatus.classList.toggle('read');
   if (readStatus.classList.contains('read')) {
     readStatus.textContent = 'Read';
+    myLibrary[i].statusSwitch();
   } else {
     readStatus.textContent = 'Unread';
     readStatus.classList.add('unread')
+    myLibrary[i].statusSwitch();
   }
 }
 function removeBook(event) {
@@ -139,4 +153,3 @@ function removeBook(event) {
   // Update the display
   displayBooks();
 }
-//Modals 
