@@ -44,6 +44,7 @@ function appendBookEntry(book, index) {
   const bookEntry = document.querySelector('.left-card-section__title + .card-entry')
   const newBookEntry = document.createElement('li');
   newBookEntry.classList.add('book-entry');
+  
   newBookEntry.textContent = book.title
   bookEntry.appendChild(newBookEntry)
 
@@ -86,7 +87,9 @@ function addInitialStatus(book, element) {
     element.classList.add('unread')
   };
 }
+function createBookInfoModal() {
 
+}
 //Change status button 
 function changeStatus(event) {
   const readStatus = event.target.previousElementSibling
@@ -123,3 +126,9 @@ confirmBtn.addEventListener("click", (event) => {
   event.preventDefault(); 
   addBookToLibrary()
 });
+window.onclick = function(event) {
+  console.log(event.target)
+  if (event.target == dialog) {
+    dialog.close();
+  }
+}
