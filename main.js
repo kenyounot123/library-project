@@ -3,6 +3,32 @@ const myLibrary = [new Book("Percy Jackson", "bobby", 233, false )];
 
 displayBooks();
 
+const formDialog = document.querySelector("#formDialog");
+const showButton = document.querySelector(".new-book-btn");
+const closeButton = document.querySelector(".cancel-btn");
+const bookDialog = document.querySelector("#bookDialog")
+showButton.addEventListener("click", () => {
+  formDialog.showModal();
+});
+
+closeButton.addEventListener("click", () => {
+  formDialog.close();
+  bookDialog.close();
+});
+// Do not submit fake form
+confirmBtn.addEventListener("click", (event) => {
+  event.preventDefault(); 
+  addBookToLibrary()
+});
+window.onclick = function(event) {
+  if (event.target == formDialog) {
+    formDialog.close();
+  }
+  if (event.target == bookDialog) {
+    bookDialog.close();
+  }
+}
+
 function Book(title, author, pages, status) {
   this.title = title
   this.author = author
@@ -24,7 +50,7 @@ function addBookToLibrary() {
   const newBook = new Book(title, author, pages, status)
   myLibrary.push(newBook)
   displayBooks()
-  dialog.close()
+  formDialog.close()
 }
 //Loop through library array to display books to DOM
 function displayBooks() {
@@ -44,7 +70,7 @@ function appendBookEntry(book, index) {
   const bookEntry = document.querySelector('.left-card-section__title + .card-entry')
   const newBookEntry = document.createElement('li');
   newBookEntry.classList.add('book-entry');
-  
+  newBookEntry.addEventListener('click', displayBookInfo)
   newBookEntry.textContent = book.title
   bookEntry.appendChild(newBookEntry)
 
@@ -87,6 +113,9 @@ function addInitialStatus(book, element) {
     element.classList.add('unread')
   };
 }
+function displayBookInfo() {
+  bookDialog.showModal()
+}
 function createBookInfoModal() {
 
 }
@@ -110,25 +139,4 @@ function removeBook(event) {
   // Update the display
   displayBooks();
 }
-//Modal
-const dialog = document.querySelector("dialog");
-const showButton = document.querySelector(".new-book-btn");
-const closeButton = document.querySelector(".cancel-btn");
-showButton.addEventListener("click", () => {
-  dialog.showModal();
-});
-
-closeButton.addEventListener("click", () => {
-  dialog.close();
-});
-// Do not submit fake form
-confirmBtn.addEventListener("click", (event) => {
-  event.preventDefault(); 
-  addBookToLibrary()
-});
-window.onclick = function(event) {
-  console.log(event.target)
-  if (event.target == dialog) {
-    dialog.close();
-  }
-}
+//Modals 
