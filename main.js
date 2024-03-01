@@ -1,13 +1,12 @@
-const myLibrary = [new Book("Percy Jackson", "bobby", 233, false )];
-
+const myLibrary = [new Book("Percy Jackson", "bobby", 233, false)];
 
 displayBooks();
 
-//Modals 
+//Modals
 const formDialog = document.querySelector("#formDialog");
 const showButton = document.querySelector(".new-book-btn");
 const closeButton = document.querySelector(".cancel-btn");
-const bookDialog = document.querySelector("#bookDialog")
+const bookDialog = document.querySelector("#bookDialog");
 showButton.addEventListener("click", () => {
   formDialog.showModal();
 });
@@ -18,17 +17,17 @@ closeButton.addEventListener("click", () => {
 });
 // Do not submit fake form
 confirmBtn.addEventListener("click", (event) => {
-  event.preventDefault(); 
-  addBookToLibrary()
+  event.preventDefault();
+  addBookToLibrary();
 });
-window.onclick = function(event) {
+window.onclick = function (event) {
   if (event.target == formDialog) {
     formDialog.close();
   }
   if (event.target == bookDialog) {
     bookDialog.close();
   }
-}
+};
 
 function Book(title, author, pages, status) {
   this.title = title;
@@ -36,15 +35,15 @@ function Book(title, author, pages, status) {
   this.pages = pages;
   this.status = status;
 }
-Book.prototype.statusSwitch = function() {
+Book.prototype.statusSwitch = function () {
   this.read = !this.read;
-}
+};
 
 function addBookToLibrary() {
-  const title = document.getElementById('title').value ;
-  const author = document.getElementById('author').value ;
-  const pages = document.getElementById('pages').value;
-  const status = document.getElementById('status').checked;
+  const title = document.getElementById("title").value;
+  const author = document.getElementById("author").value;
+  const pages = document.getElementById("pages").value;
+  const status = document.getElementById("status").checked;
   // Check if fields are empty
   if (!title || !author || !pages) {
     alert("Please fill in all required fields.");
@@ -59,11 +58,14 @@ function addBookToLibrary() {
 //Loop through library array to display books to DOM
 function displayBooks() {
   //Reset DOM to prevent repeat data
-  const bookEntry = document.querySelector('.left-card-section__title + .card-entry');
-  const bookEntryStatus = document.querySelector('.right-card-section__title + .card-entry');
-  bookEntry.innerHTML = '';
-  bookEntryStatus.innerHTML = '';
-
+  const bookEntry = document.querySelector(
+    ".left-card-section__title + .card-entry"
+  );
+  const bookEntryStatus = document.querySelector(
+    ".right-card-section__title + .card-entry"
+  );
+  bookEntry.innerHTML = "";
+  bookEntryStatus.innerHTML = "";
 
   myLibrary.forEach((book, index) => {
     appendBookEntry(book, index);
@@ -71,40 +73,44 @@ function displayBooks() {
 }
 //Appends new book to the DOM
 function appendBookEntry(book, index) {
-  const bookEntry = document.querySelector('.left-card-section__title + .card-entry');
-  const newBookEntry = document.createElement('li');
-  newBookEntry.classList.add('book-entry');
-  newBookEntry.setAttribute('data-index', index);
-  newBookEntry.addEventListener('click', function(event) {
+  const bookEntry = document.querySelector(
+    ".left-card-section__title + .card-entry"
+  );
+  const newBookEntry = document.createElement("li");
+  newBookEntry.classList.add("book-entry");
+  newBookEntry.setAttribute("data-index", index);
+  newBookEntry.addEventListener("click", function (event) {
     createBookInfoModal(event);
     displayBookInfo();
-  })
+  });
   newBookEntry.textContent = book.title;
   bookEntry.appendChild(newBookEntry);
 
   //Appends status of book to DOM
-  const bookEntryStatus = document.querySelector('.right-card-section__title + .card-entry');
-  const newBookEntryStatus = document.createElement('li');
-  const readStatus = document.createElement('span');
-  newBookEntryStatus.classList.add('book-entry');
-  readStatus.classList.add('book-entry--status');
+  const bookEntryStatus = document.querySelector(
+    ".right-card-section__title + .card-entry"
+  );
+  const newBookEntryStatus = document.createElement("li");
+  const readStatus = document.createElement("span");
+  newBookEntryStatus.classList.add("book-entry");
+  readStatus.classList.add("book-entry--status");
   addInitialStatus(book, readStatus);
 
-  // Appends remove book button to DOM 
-  const removeBtn = document.createElement('button');
-  removeBtn.textContent = 'Remove';
-  removeBtn.setAttribute('data-index', index);
-  removeBtn.classList.add('remove-book-btn');
-  removeBtn.addEventListener('click', function(event) {
+  // Appends remove book button to DOM
+  const removeBtn = document.createElement("button");
+  removeBtn.textContent = "Remove";
+  removeBtn.setAttribute("data-index", index);
+  removeBtn.classList.add("remove-book-btn");
+  removeBtn.addEventListener("click", function (event) {
     removeBook(event);
-  })
+  });
 
-  //Appends change status button to DOM 
-  const changeStatusBtn = document.createElement('button'); 
-  changeStatusBtn.textContent = 'Change Status';
-  changeStatusBtn.setAttribute('data-index', index)
-  changeStatusBtn.classList.add('change-status-btn');
-  changeStatusBtn.addEventListener('click', function(event) {
+  //Appends change status button to DOM
+  const changeStatusBtn = document.createElement("button");
+  changeStatusBtn.textContent = "Change Status";
+  changeStatusBtn.setAttribute("data-index", index);
+  changeStatusBtn.classList.add("change-status-btn");
+  changeStatusBtn.addEventListener("click", function (event) {
     changeStatus(event);
   });
 
@@ -115,37 +121,39 @@ function appendBookEntry(book, index) {
 }
 function addInitialStatus(book, element) {
   if (book.status === true) {
-    element.textContent = 'Read';
-    element.classList.add('read');
+    element.textContent = "Read";
+    element.classList.add("read");
   } else {
-    element.textContent = 'Unread';
-    element.classList.add('unread');
-  };
+    element.textContent = "Unread";
+    element.classList.add("unread");
+  }
 }
 function displayBookInfo() {
   bookDialog.showModal();
 }
 function createBookInfoModal(event) {
-  const bookIndex = parseInt(event.target.getAttribute('data-index'));
+  const bookIndex = parseInt(event.target.getAttribute("data-index"));
   const currentBook = myLibrary[bookIndex];
-  bookDialog.textContent = `"${currentBook.title}" by ${currentBook.author} , ${String(currentBook.pages)} pages`;
+  bookDialog.textContent = `"${currentBook.title}" by ${
+    currentBook.author
+  } , ${String(currentBook.pages)} pages`;
 }
-//Change status button 
+//Change status button
 function changeStatus(event) {
   const readStatus = event.target.previousElementSibling;
-  let i = event.target.getAttribute('data-index')
-  readStatus.classList.toggle('read');
-  if (readStatus.classList.contains('read')) {
-    readStatus.textContent = 'Read';
+  let i = event.target.getAttribute("data-index");
+  readStatus.classList.toggle("read");
+  if (readStatus.classList.contains("read")) {
+    readStatus.textContent = "Read";
     myLibrary[i].statusSwitch();
   } else {
-    readStatus.textContent = 'Unread';
-    readStatus.classList.add('unread')
+    readStatus.textContent = "Unread";
+    readStatus.classList.add("unread");
     myLibrary[i].statusSwitch();
   }
 }
 function removeBook(event) {
-  const dataIndex = parseInt(event.target.getAttribute('data-index'));
+  const dataIndex = parseInt(event.target.getAttribute("data-index"));
 
   // Remove the book from myLibrary array
   myLibrary.splice(dataIndex, 1);
